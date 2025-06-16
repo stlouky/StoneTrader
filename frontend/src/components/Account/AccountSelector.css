@@ -1,0 +1,244 @@
+/* frontend/src/components/Account/AccountSelector.css */
+
+.account-selector {
+  position: relative;
+  display: inline-block;
+  margin-right: 12px;
+  z-index: 1000;
+}
+
+.account-selector-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 180px;
+  user-select: none;
+}
+
+.account-selector-button:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: #555;
+}
+
+.account-selector-button.open {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: #007bff;
+}
+
+.account-selector-button.loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.account-icon {
+  font-size: 16px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.account-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.account-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-balance {
+  font-size: 11px;
+  color: #aaa;
+  font-weight: 400;
+}
+
+.dropdown-arrow {
+  font-size: 10px;
+  color: #888;
+  transition: transform 0.2s ease;
+  margin-left: 4px;
+}
+
+.dropdown-arrow.up {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 280px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  z-index: 1001;
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #2a2a2a;
+  border-bottom: 1px solid #333;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ccc;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.accounts-count {
+  color: #666;
+  font-weight: 400;
+}
+
+.accounts-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.account-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #222;
+}
+
+.account-item:last-child {
+  border-bottom: none;
+}
+
+.account-item:hover {
+  background: #2a2a2a;
+}
+
+.account-item.active {
+  background: rgba(0, 123, 255, 0.15);
+  border-left: 3px solid #007bff;
+}
+
+.account-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.account-item .account-icon {
+  font-size: 18px;
+  min-width: 24px;
+}
+
+.account-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.account-item .account-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.active-badge {
+  color: #007bff;
+  font-size: 12px;
+}
+
+.account-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+}
+
+.account-type {
+  padding: 2px 6px;
+  background: #333;
+  border-radius: 3px;
+  color: #ccc;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.account-item .account-balance {
+  color: #aaa;
+  font-weight: 500;
+}
+
+.account-status {
+  display: flex;
+  align-items: center;
+}
+
+.status-indicator {
+  font-size: 12px;
+}
+
+.dropdown-error {
+  padding: 12px 16px;
+  background: rgba(220, 53, 69, 0.1);
+  border-top: 1px solid #333;
+  color: #ff6b6b;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .account-selector-button {
+    min-width: 140px;
+  }
+  
+  .account-dropdown {
+    min-width: 240px;
+  }
+  
+  .account-name {
+    font-size: 12px;
+  }
+  
+  .account-balance {
+    font-size: 10px;
+  }
+}
+
+/* Error State */
+.account-selector.error .account-selector-button {
+  border-color: #dc3545;
+  background: rgba(220, 53, 69, 0.1);
+}
+
+/* Loading State */
+.account-selector.loading .account-selector-button {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Focus Management */
+.account-selector-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}

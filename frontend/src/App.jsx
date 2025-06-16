@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from './hooks/useAuth';
+import AccountSelector from './components/Account/AccountSelector';
 
 // Loading Component
 function LoadingScreen() {
@@ -128,19 +129,31 @@ function TradingInterface({ authStatus, onLogout }) {
                         Connected to cTrader • {authStatus.accounts.length} accounts
                     </p>
                 </div>
-                <button
-                    onClick={onLogout}
-                    style={{
-                        background: '#dc2626',
-                        color: 'white',
-                        border: 'none',
-                        padding: '0.5rem 1rem',
-                        borderRadius: '4px',
-                        cursor: 'pointer'
-                    }}
-                >
-                    Logout
-                </button>
+                
+                {/* Account Selector & Logout Controls */}
+                <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '12px' 
+                }}>
+                    <AccountSelector />
+                    
+                    <button
+                        onClick={onLogout}
+                        style={{
+                            background: '#dc2626',
+                            color: 'white',
+                            border: 'none',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '0.9rem',
+                            fontWeight: '500'
+                        }}
+                    >
+                        Logout
+                    </button>
+                </div>
             </header>
             
             <main style={{ padding: '2rem' }}>
@@ -193,20 +206,16 @@ function TradingInterface({ authStatus, onLogout }) {
                             <label style={{ display: 'block', color: '#9ca3af', marginBottom: '0.5rem' }}>
                                 Account:
                             </label>
-                            <select style={{
-                                width: '100%',
+                            <div style={{
                                 padding: '0.5rem',
                                 background: '#2d2d2d',
                                 border: '1px solid #404040',
                                 borderRadius: '4px',
-                                color: '#e5e5e5'
+                                color: '#9ca3af',
+                                fontSize: '0.9rem'
                             }}>
-                                {authStatus.accounts.map((account, i) => (
-                                    <option key={i} value={account.accountId}>
-                                        {account.accountId} - ${account.balance || '0.00'}
-                                    </option>
-                                ))}
-                            </select>
+                                Will sync with AccountSelector above
+                            </div>
                         </div>
                         
                         <div style={{ marginBottom: '1rem' }}>
@@ -286,7 +295,7 @@ function TradingInterface({ authStatus, onLogout }) {
                                 🟢 {authStatus.connected ? 'Connected' : 'Disconnected'}
                             </p>
                             <p style={{ color: '#9ca3af', margin: '0.25rem 0 0 0', fontSize: '0.8rem' }}>
-                                {authStatus.accounts.length} accounts available
+                                AccountSelector will show live switching
                             </p>
                         </div>
                     </div>

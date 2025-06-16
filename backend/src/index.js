@@ -14,6 +14,7 @@ const ConnectionManager = require('./services/ConnectionManager');
 // Import API routes
 const authRoutes = require('./api/auth');
 const tradingRoutes = require('./api/trading');
+const accountRoutes = require('./api/accounts'); // NEW: Account management routes
 
 class StoneTraderServer {
     constructor() {
@@ -76,24 +77,47 @@ class StoneTraderServer {
             });
         });
         
+        // Root endpoint with API documentation
+        this.app.get('/', (req, res) => {
+            res.json({
+                message: '🏛️ StoneTrader Backend API',
+                version: '1.0.0',
+                status: 'running',
+                endpoints: {
+                    health: '/health',
+                    auth: '/auth/*',
+                    trading: '/api/trading/*',
+                    accounts: '/api/accounts/*' // NEW!
+                },
+                docs: 'https://github.com/stlouky/StoneTrader'
+            });
+        });
+        
         // Inject cTrader API into routes
         // authRoutes.setCTraderAPI(this.ctraderAPI); // Removed - not needed
         // tradingRoutes.setCTraderAPI(this.ctraderAPI); // Not needed
         
         // API routes
         this.app.use('/auth', authRoutes);
-        // this.app.use("/api", tradingRoutes); // Disabled
+        this.app.use('/api/trading', tradingRoutes); // Re-enabled for future use
+        this.app.use('/api/accounts', accountRoutes); // NEW: Account management routes
         
         // 404 handler
         this.app.use('*', (req, res) => {
-            res.status(404).json({ error: 'Endpoint not found' });
+            res.status(404).json({ 
+                error: 'Endpoint not found',
+                path: req.originalUrl,
+                method: req.method,
+                timestamp: new Date().toISOString()
+            });
         });
         
         // Error handler
         this.app.use((error, req, res, next) => {
             console.error('❌ Server error:', error);
             res.status(500).json({ 
-                error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+                error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
+                timestamp: new Date().toISOString()
             });
         });
     }
@@ -124,7 +148,31 @@ class StoneTraderServer {
             console.log(`🏛️ StoneTrader Backend running on port ${port}`);
             console.log(`🔗 cTrader OAuth: http://localhost:${port}/auth/login`);
             console.log(`📊 Health check: http://localhost:${port}/health`);
+            console.log(`🏦 Account API: http://localhost:${port}/api/accounts`); // NEW!
             console.log(`⚠️  Remember to set CTRADER_CLIENT_SECRET in .env`);
+            
+            // Log available endpoints
+            console.log(`
+📋 Available API Endpoints:
+   GET  /health              - Health check
+   GET  /                    - API documentation
+   
+   🔐 Auth endpoints:
+   GET  /auth/login          - Start OAuth login
+   GET  /auth/callback       - OAuth callback
+   GET  /auth/user           - Get current user
+   POST /auth/logout         - Logout user
+   
+   📊 Trading endpoints:
+   GET  /api/trading/status  - Trading status
+   POST /api/trading/order   - Place order
+   
+   🏦 Account endpoints:     [NEW!]
+   GET  /api/accounts        - List all accounts
+   GET  /api/accounts/current - Get active account  
+   POST /api/accounts/switch - Switch active account
+   GET  /api/accounts/:id    - Get account details
+            `);
         });
     }
 }
